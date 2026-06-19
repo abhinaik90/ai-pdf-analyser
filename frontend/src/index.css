@@ -1,0 +1,9 @@
+/* index.css
+   WHY THIS FILE EXISTS:
+   These three lines pull in Tailwind's base styles, component classes,
+   and utility classes. Without this file, none of the Tailwind classes
+   used in our components (e.g. className="flex p-4") would actually work. */
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;

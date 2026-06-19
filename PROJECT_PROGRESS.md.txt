@@ -1,0 +1,110 @@
+# Private PDF AI Assistant
+
+## Project Overview
+
+A secure AI-powered document assistant that allows users to:
+
+* Register and login
+* Upload confidential PDFs
+* Process PDFs locally
+* Store embeddings locally
+* Chat with uploaded documents using local AI models (Ollama)
+* No external AI APIs
+
+---
+
+## Tech Stack
+
+### Frontend
+
+* React
+* Vite
+* React Router
+* Axios
+
+### Backend
+
+* Node.js
+* Express.js
+
+### Database
+
+* PostgreSQL
+
+### AI Layer
+
+* Ollama
+* ChromaDB
+
+---
+
+## Completed
+
+### Backend
+
+* [x] Project structure created
+* [x] Environment configuration
+* [x] Database connection
+* [x] Authentication module
+* [x] Register API
+* [x] Login API
+* [x] JWT Authentication
+* [x] Protected Routes
+
+### Database
+
+* [x] PostgreSQL installed
+* [x] Database created: pdf_ai_assistant
+* [x] Users table created
+
+### Testing
+
+* [x] Register API tested
+* [x] Login API tested
+* [x] PostgreSQL connection tested
+
+---
+
+## Current Phase
+
+Frontend Authentication
+
+### Current Step
+
+Create:
+
+* src/services/api.js
+* src/services/authService.js
+
+Status:
+
+* [ ] Not Started
+
+---
+
+## Next Planned Steps
+
+1. API Layer
+2. Auth Context
+3. Login Page
+4. Register Page
+5. Protected Route
+6. Dashboard Layout
+7. PDF Upload
+8. PDF Processing
+9. ChromaDB Integration
+10. Ollama Integration
+11. Document Chat
+12. Deployment
+
+---
+
+## Important Rules
+
+* Do not regenerate the whole project.
+* Do not create ZIP files.
+* Generate only requested files.
+* Follow the existing folder structure.
+* Use PostgreSQL as the database.
+* Use local Ollama models.
+* Use ChromaDB for vector storage.
