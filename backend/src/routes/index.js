@@ -12,6 +12,7 @@ const express = require('express');
 const router = express.Router();
 
 const authRoutes = require('./authRoutes');
+const documentRoutes = require('./documentRoutes');
 
 // Simple health check endpoint - useful to confirm the server is running
 // and to check from the frontend that the API is reachable.
@@ -23,5 +24,10 @@ router.get('/health', (req, res) => {
 // All auth endpoints are now available under /api/auth/*
 // e.g. POST /api/auth/register, POST /api/auth/login
 router.use('/auth', authRoutes);
+
+// Phase 3: File Upload
+// All document endpoints are now available under /api/documents/*
+// e.g. POST /api/documents/upload
+router.use('/documents', documentRoutes);
 
 module.exports = router;

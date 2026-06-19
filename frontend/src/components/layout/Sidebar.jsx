@@ -40,7 +40,7 @@ const ChatIcon = (props) => (
 
 const navItems = [
   { name: "Dashboard", to: "/dashboard", icon: HomeIcon, disabled: false },
-  { name: "Documents", to: "#", icon: FileIcon, disabled: true },
+  { name: "Documents", to: "/documents", icon: FileIcon, disabled: false },
   { name: "Chat", to: "#", icon: ChatIcon, disabled: true },
 ];
 
