@@ -1,111 +1,96 @@
-// src/App.jsx
+// src/pages/Dashboard.jsx
 //
-// Top-level route definitions for the app.
-// AuthProvider and BrowserRouter are set up in main.jsx (see below),
-// so this file only needs to declare WHERE each page lives.
-//
-// NOTE: Dashboard below is a TEMPORARY inline placeholder, as requested,
-// since a real Dashboard page does not exist yet. It will be replaced by
-// a proper src/pages/Dashboard.jsx in a later step.
+// Dashboard page content. Layout (sidebar/header/scroll area) is handled
+// entirely by MainLayout — this file only supplies what goes inside it.
+// No API calls here; "Documents" and "Chat" are static placeholders
+// for now, per the brief.
 
-import { Routes, Route, Navigate } from "react-router-dom";
-import Login from "./pages/auth/Login";
-import Register from "./pages/auth/Register";
-import ProtectedRoute from "./routes/ProtectedRoute";
-import { useAuth } from "./context/AuthContext";
-import "./index.css";
+import MainLayout from "../components/Layout/MainLayout";
+import { useAuth } from "../context/AuthContext";
 
-// ---------------------------------------------------------------------
-// Temporary Dashboard placeholder.
-// Only shows: a welcome message, the logged-in user's name, and a
-// logout button wired to AuthContext's logout().
-// ---------------------------------------------------------------------
+const FileIcon = (props) => (
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" {...props}>
+    <path d="M7 3h7l4 4v13a1 1 0 0 1-1 1H7a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1Z" />
+    <path d="M14 3v4h4" />
+  </svg>
+);
+
+const ChatIcon = (props) => (
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" {...props}>
+    <path d="M21 12a8 8 0 1 1-3.2-6.4" />
+    <path d="M21 3v6h-6" />
+  </svg>
+);
+
+const ShieldIcon = (props) => (
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" {...props}>
+    <path d="M12 3 4 6v6c0 5 3.5 7.5 8 9 4.5-1.5 8-4 8-9V6l-8-3Z" />
+  </svg>
+);
+
+// Static placeholder cards — purely visual, no backend calls.
+const cards = [
+  {
+    title: "Documents",
+    description: "Upload and manage your confidential PDFs.",
+    icon: FileIcon,
+    status: "Coming soon",
+  },
+  {
+    title: "Chat",
+    description: "Ask questions about your uploaded documents.",
+    icon: ChatIcon,
+    status: "Coming soon",
+  },
+  {
+    title: "Privacy",
+    description: "All processing runs locally — nothing leaves your machine.",
+    icon: ShieldIcon,
+    status: "Active",
+  },
+];
+
 const Dashboard = () => {
-  const { user, logout } = useAuth();
+  const { user } = useAuth();
 
   return (
-    <div style={dashboardStyles.wrapper}>
-      <div style={dashboardStyles.card}>
-        <h1 style={dashboardStyles.heading}>Welcome{user?.name ? `, ${user.name}` : ""} 👋</h1>
-        <p style={dashboardStyles.subtext}>You are logged in to Private PDF AI Assistant.</p>
-        <button onClick={logout} style={dashboardStyles.logoutButton}>
-          Logout
-        </button>
+    <MainLayout title="Dashboard">
+      <div className="mb-8">
+        <h2 className="text-2xl font-bold text-gray-900">
+          Welcome back{user?.name ? `, ${user.name}` : ""} 👋
+        </h2>
+        <p className="mt-1 text-sm text-gray-500">
+          Here&apos;s an overview of your private workspace.
+        </p>
       </div>
-    </div>
+
+      <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3">
+        {cards.map(({ title, description, icon: Icon, status }) => (
+          <div
+            key={title}
+            className="rounded-xl border border-gray-200 bg-white p-5 shadow-sm"
+          >
+            <div className="flex items-center justify-between">
+              <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-indigo-50 text-indigo-600">
+                <Icon className="h-5 w-5" />
+              </div>
+              <span
+                className={`rounded-full px-2.5 py-0.5 text-xs font-medium ${
+                  status === "Active"
+                    ? "bg-emerald-50 text-emerald-700"
+                    : "bg-gray-100 text-gray-500"
+                }`}
+              >
+                {status}
+              </span>
+            </div>
+            <h3 className="mt-4 text-sm font-semibold text-gray-900">{title}</h3>
+            <p className="mt-1 text-sm text-gray-500">{description}</p>
+          </div>
+        ))}
+      </div>
+    </MainLayout>
   );
 };
 
-const dashboardStyles = {
-  wrapper: {
-    minHeight: "100vh",
-    display: "flex",
-    alignItems: "center",
-    justifyContent: "center",
-    backgroundColor: "#f5f6fa",
-    padding: "16px",
-    boxSizing: "border-box",
-  },
-  card: {
-    width: "100%",
-    maxWidth: "420px",
-    backgroundColor: "#ffffff",
-    borderRadius: "10px",
-    boxShadow: "0 4px 16px rgba(0, 0, 0, 0.08)",
-    padding: "32px",
-    textAlign: "center",
-    boxSizing: "border-box",
-  },
-  heading: {
-    margin: 0,
-    fontSize: "22px",
-    fontWeight: 600,
-    color: "#1f2329",
-  },
-  subtext: {
-    margin: "10px 0 24px",
-    fontSize: "14px",
-    color: "#6b7280",
-  },
-  logoutButton: {
-    padding: "10px 20px",
-    fontSize: "14px",
-    fontWeight: 600,
-    color: "#ffffff",
-    backgroundColor: "#dc2626",
-    border: "none",
-    borderRadius: "6px",
-    cursor: "pointer",
-  },
-};
-
-// ---------------------------------------------------------------------
-// App — route table.
-// ---------------------------------------------------------------------
-function App() {
-  return (
-    <Routes>
-      {/* Public routes */}
-      <Route path="/login" element={<Login />} />
-      <Route path="/register" element={<Register />} />
-
-      {/* Protected route — only reachable when authenticated */}
-      <Route
-        path="/dashboard"
-        element={
-          <ProtectedRoute>
-            <Dashboard />
-          </ProtectedRoute>
-        }
-      />
-
-      {/* Default route: send users straight to Login */}
-      <Route path="/" element={<Navigate to="/login" replace />} />
-
-      {/* Catch-all: unknown paths also go to Login */}
-      <Route path="*" element={<Navigate to="/login" replace />} />
-    </Routes>
-  );
-}
-
-export default App;
+export default Dashboard;
